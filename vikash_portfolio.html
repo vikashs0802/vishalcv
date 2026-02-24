@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vishal Singh Naruka — Customer Service & Finance</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          background: '#0f172a',
+          surface: '#1e293b',
+          accent: '#10b981',
+          'accent-light': '#34d399',
+          'surface-2': '#273549',
+        },
+        fontFamily: {
+          display: ['Playfair Display', 'Georgia', 'serif'],
+          body: ['DM Sans', 'sans-serif'],
+          mono: ['JetBrains Mono', 'monospace'],
+        },
+        animation: {
+          'fade-in-up': 'fadeInUp 0.7s ease forwards',
+          'pulse-slow': 'pulse 3s ease-in-out infinite',
+        },
+        keyframes: {
+          fadeInUp: {
+            '0%': { opacity: '0', transform: 'translateY(32px)' },
+            '100%': { opacity: '1', transform: 'translateY(0)' },
+          }
+        }
+      }
+    }
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  * { scroll-behavior: smooth; }
+  html { background-color: #0f172a; }
+
+  section { scroll-margin-top: 5rem; }
+
+  .glass {
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+  }
+
+  .card-glass {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(16, 185, 129, 0.12);
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  }
+  .card-glass:hover {
+    border-color: rgba(16, 185, 129, 0.45);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(16, 185, 129, 0.08);
+  }
+
+  .badge {
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #34d399;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    display: inline-block;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+    pointer-events: none;
+  }
+
+  .noise::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .fade-hidden {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  details summary { cursor: pointer; list-style: none; }
+  details summary::-webkit-details-marker { display: none; }
+
+  .skill-bar-track {
+    background: rgba(16,185,129,0.12);
+    border-radius: 9999px;
+    height: 6px;
+    overflow: hidden;
+  }
+  .skill-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #34d399);
+    border-radius: 9999px;
+    width: 0;
+    transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (max-width: 768px) {
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+  }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: #1e293b;
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 1rem;
+    max-width: 560px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 2rem;
+  }
+</style>
+</head>
+<body class="noise bg-background text-slate-200 font-body antialiased">
+
+<!-- NAV -->
+<nav class="glass fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
+    <a href="#hero" class="font-display font-bold text-lg text-white tracking-tight">VSN<span class="text-accent">.</span></a>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+      <a href="#about" class="hover:text-accent transition-colors">About</a>
+      <a href="#skills" class="hover:text-accent transition-colors">Skills</a>
+      <a href="#projects" class="hover:text-accent transition-colors">Projects</a>
+      <a href="#education" class="hover:text-accent transition-colors">Education</a>
+      <a href="#contact" class="hover:text-accent transition-colors">Contact</a>
+    </div>
+    <button id="hamburger" class="md:hidden text-slate-400 hover:text-accent transition-colors" aria-label="Open navigation menu">
+      <i data-lucide="menu" class="w-6 h-6"></i>
+    </button>
+  </div>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="flex-col gap-4 px-6 pb-5 text-sm font-medium text-slate-400 border-t border-slate-700 pt-4">
+    <a href="#about" class="hover:text-accent transition-colors" onclick="closeMobile()">About</a>
+    <a href="#skills" class="hover:text-accent transition-colors" onclick="closeMobile()">Skills</a>
+    <a href="#projects" class="hover:text-accent transition-colors" onclick="closeMobile()">Projects</a>
+    <a href="#education" class="hover:text-accent transition-colors" onclick="closeMobile()">Education</a>
+    <a href="#contact" class="hover:text-accent transition-colors" onclick="closeMobile()">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="relative min-h-screen flex items-center overflow-hidden">
+  <div class="hero-glow"></div>
+  <div class="max-w-6xl mx-auto px-6 py-32 relative z-10 w-full">
+    <div class="max-w-3xl">
+      <p class="badge mb-6 fade-hidden">Available for Opportunities · Jaipur, India</p>
+      <h1 class="font-display font-black text-5xl md:text-7xl lg:text-8xl text-white leading-none mb-6 fade-hidden" style="transition-delay:0.1s">
+        Vishal<br/>
+        <span class="text-accent">Singh</span><br/>
+        Naruka
+      </h1>
+      <p class="text-xl md:text-2xl text-slate-400 font-light mb-10 max-w-xl leading-relaxed fade-hidden" style="transition-delay:0.2s">
+        Customer Service Professional with a passion for <span class="text-accent-light font-medium">banking, finance,</span> and making every customer interaction count.
+      </p>
+      <div class="flex flex-wrap gap-3 mb-12 fade-hidden" style="transition-delay:0.3s">
+        <span class="badge">💬 Fluent English</span>
+        <span class="badge">📈 Stock Market</span>
+        <span class="badge">🏦 Banking & Finance</span>
+        <span class="badge">🤝 Customer Relations</span>
+        <span class="badge">🔍 Problem Solving</span>
+      </div>
+      <div class="flex gap-4 fade-hidden" style="transition-delay:0.4s">
+        <a href="#contact" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-light text-background font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/25">
+          <i data-lucide="mail" class="w-4 h-4"></i> Get in Touch
+        </a>
+        <a href="#projects" class="inline-flex items-center gap-2 border border-slate-600 hover:border-accent text-slate-300 hover:text-accent font-medium px-6 py-3 rounded-lg transition-all duration-300">
+          <i data-lucide="folder-open" class="w-4 h-4"></i> View Projects
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- Decorative grid lines -->
+  <div class="absolute inset-0 pointer-events-none opacity-5" style="background-image: linear-gradient(rgba(16,185,129,1) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,1) 1px, transparent 1px); background-size: 60px 60px;"></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="py-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+      <div class="fade-hidden">
+        <p class="badge mb-4">About Me</p>
+        <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+          Bridging People<br/>&amp; Finance
+        </h2>
+        <p class="text-slate-400 leading-relaxed mb-6">
+          A motivated and detail-oriented final-year Bachelor of Arts student, eager to build a career in banking and financial customer service. I bring strong communication, problem-solving, and interpersonal skills to every interaction.
+        </p>
+        <p class="text-slate-400 leading-relaxed">
+          I am passionate about assisting customers with their financial needs and ensuring a seamless banking experience — combining academic knowledge with self-taught insights from the stock market.
+        </p>
+      </div>
+      <div class="fade-hidden grid grid-cols-2 gap-4" style="transition-delay:0.15s">
+        <div class="card-glass rounded-xl p-6 col-span-2">
+          <p class="font-mono text-accent text-sm mb-2">Career Objective</p>
+          <p class="text-slate-300 text-sm leading-relaxed">Seeking a customer service role in banking to apply communication and problem-solving skills, while leveraging knowledge of stocks and trades to provide insightful financial guidance.</p>
+        </div>
+        <div class="card-glass rounded-xl p-6 text-center">
+          <div class="text-3xl font-display font-black text-accent mb-1">2025</div>
+          <div class="text-slate-400 text-xs">Graduation Year</div>
+        </div>
+        <div class="card-glass rounded-xl p-6 text-center">
+          <div class="text-3xl font-display font-black text-accent mb-1">3+</div>
+          <div class="text-slate-400 text-xs">Years of Self-Study in Markets</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="py-24 bg-surface/30">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16 fade-hidden">
+      <p class="badge mb-4">Core Competencies</p>
+      <h2 class="font-display text-4xl md:text-5xl font-bold text-white">Skills &amp; Abilities</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="card-glass rounded-2xl p-8 fade-hidden">
+        <h3 class="font-semibold text-white mb-6 flex items-center gap-2">
+          <i data-lucide="message-circle" class="w-5 h-5 text-accent"></i> Communication
+        </h3>
+        <div class="space-y-5">
+          <div>
+            <div class="flex justify-between text-sm text-slate-400 mb-2"><span>Fluent English (Verbal)</span><span class="text-accent">95%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="95"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm text-slate-400 mb-2"><span>Written English</span><span class="text-accent">90%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="90"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm text-slate-400 mb-2"><span>Interpersonal Abilities</span><span class="text-accent">88%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="88"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-glass rounded-2xl p-8 fade-hidden" style="transition-delay:0.1s">
+        <h3 class="font-semibold text-white mb-6 flex items-center gap-2">
+          <i data-lucide="trending-up" class="w-5 h-5 text-accent"></i> Finance & Service
+        </h3>
+        <div class="space-y-5">
+          <div>
+            <div class="flex justify-between text-sm text-slate-400 mb-2"><span>Stock Market Knowledge</span><span class="text-accent">80%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="80"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm text-slate-400 mb-2"><span>Customer Inquiry Handling</span><span class="text-accent">85%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="85"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm text-slate-400 mb-2"><span>Attention to Detail</span><span class="text-accent">92%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="92"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Soft skills tags -->
+    <div class="flex flex-wrap gap-3 justify-center mt-10 fade-hidden">
+      <span class="badge">Problem Solving</span>
+      <span class="badge">Quick Learner</span>
+      <span class="badge">Financial Guidance</span>
+      <span class="badge">Banking Services</span>
+      <span class="badge">Customer Empathy</span>
+      <span class="badge">Trade Knowledge</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS / HIGHLIGHTS BENTO GRID -->
+<section id="projects" class="py-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16 fade-hidden">
+      <p class="badge mb-4">Highlights & Initiatives</p>
+      <h2 class="font-display text-4xl md:text-5xl font-bold text-white">Key Projects</h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+
+      <!-- Card 1 — col-span-2 -->
+      <div class="md:col-span-2 card-glass rounded-2xl overflow-hidden fade-hidden cursor-pointer group" onclick="openModal('modal-1')">
+        <div class="relative overflow-hidden h-52">
+          <img src="https://picsum.photos/seed/FinancialLiteracy/800/600" alt="Financial Literacy Initiative" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-60" />
+          <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
+          <div class="absolute bottom-4 left-4">
+            <span class="badge text-xs">Self-Initiated</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-bold text-xl text-white mb-2">Financial Literacy Initiative</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Built personal expertise in equity markets and financial instruments through self-directed research, enabling customer-facing financial guidance.</p>
+          <div class="mt-4 flex items-center gap-1 text-accent text-xs font-mono">
+            <i data-lucide="plus-circle" class="w-3 h-3"></i> View Details
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card-glass rounded-2xl overflow-hidden fade-hidden cursor-pointer group" style="transition-delay:0.1s" onclick="openModal('modal-2')">
+        <div class="relative overflow-hidden h-36">
+          <img src="https://picsum.photos/seed/CustomerService/800/600" alt="Customer Communication Mastery" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-60" />
+          <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+        </div>
+        <div class="p-5">
+          <h3 class="font-semibold text-white mb-2 text-base">Customer Communication Mastery</h3>
+          <p class="text-slate-400 text-xs leading-relaxed">Developed professional-grade English communication skills for high-stakes financial conversations.</p>
+          <div class="mt-3 flex items-center gap-1 text-accent text-xs font-mono">
+            <i data-lucide="plus-circle" class="w-3 h-3"></i> View Details
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card-glass rounded-2xl overflow-hidden fade-hidden cursor-pointer group" style="transition-delay:0.15s" onclick="openModal('modal-3')">
+        <div class="relative overflow-hidden h-36">
+          <img src="https://picsum.photos/seed/BankingAcademic/800/600" alt="Banking & Financial Services Coursework" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-60" />
+          <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+        </div>
+        <div class="p-5">
+          <h3 class="font-semibold text-white mb-2 text-base">Banking Academic Foundation</h3>
+          <p class="text-slate-400 text-xs leading-relaxed">Leveraged BA coursework to build a strong conceptual foundation in financial services and economics.</p>
+          <div class="mt-3 flex items-center gap-1 text-accent text-xs font-mono">
+            <i data-lucide="plus-circle" class="w-3 h-3"></i> View Details
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 — col-span-2 -->
+      <div class="md:col-span-2 card-glass rounded-2xl overflow-hidden fade-hidden cursor-pointer group" style="transition-delay:0.2s" onclick="openModal('modal-4')">
+        <div class="relative overflow-hidden h-52">
+          <img src="https://picsum.photos/seed/StockTrading/800/600" alt="Stock & Trade Research" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-60" />
+          <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
+          <div class="absolute bottom-4 left-4">
+            <span class="badge text-xs">Self-Taught</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-bold text-xl text-white mb-2">Stock &amp; Trade Research</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Independently studied equity investments, market trends, and trading strategies — translating complex financial concepts into actionable customer advice.</p>
+          <div class="mt-4 flex items-center gap-1 text-accent text-xs font-mono">
+            <i data-lucide="plus-circle" class="w-3 h-3"></i> View Details
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" class="py-24 bg-surface/30">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16 fade-hidden">
+      <p class="badge mb-4">Academic Background</p>
+      <h2 class="font-display text-4xl md:text-5xl font-bold text-white">Education</h2>
+    </div>
+    <div class="max-w-2xl mx-auto">
+      <div class="card-glass rounded-2xl p-8 fade-hidden relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full -translate-y-12 translate-x-12 pointer-events-none"></div>
+        <div class="flex items-start gap-5">
+          <div class="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center flex-shrink-0 mt-1">
+            <i data-lucide="graduation-cap" class="w-6 h-6 text-accent"></i>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-2xl text-white mb-1">Bachelor of Arts (BA)</h3>
+            <p class="text-accent font-mono text-sm mb-3">Rajasthan University</p>
+            <p class="text-slate-400 text-sm mb-4">2022 – 2025 · Final Year</p>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              Pursuing a comprehensive liberal arts education with a focus on economics and social sciences, building the analytical and communication foundation needed for a career in banking and financial customer services.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="py-32">
+  <div class="max-w-6xl mx-auto px-6 text-center">
+    <div class="fade-hidden">
+      <p class="badge mb-6">Let's Connect</p>
+      <h2 class="font-display font-black text-5xl md:text-6xl text-white mb-6">
+        Ready to Work<br/><span class="text-accent">Together?</span>
+      </h2>
+      <p class="text-slate-400 text-lg max-w-lg mx-auto mb-12 leading-relaxed">
+        Whether you have an opportunity, a question, or just want to connect — I'd love to hear from you.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+        <a href="mailto:vishalcapitaledge@gmail.com" class="inline-flex items-center gap-3 bg-accent hover:bg-accent-light text-background font-semibold px-8 py-4 rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/30 text-lg">
+          <i data-lucide="mail" class="w-5 h-5"></i> Email Me
+        </a>
+      </div>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-8 text-slate-400 text-sm">
+        <div class="flex items-center gap-2">
+          <i data-lucide="phone" class="w-4 h-4 text-accent"></i>
+          <span>+91 7023559351</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i data-lucide="at-sign" class="w-4 h-4 text-accent"></i>
+          <span>vishalcapitaledge@gmail.com</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i data-lucide="map-pin" class="w-4 h-4 text-accent"></i>
+          <span>Jaipur, Rajasthan, India</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-slate-800 py-6">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-slate-500 text-xs">
+    <span class="font-display font-bold text-slate-400">VSN<span class="text-accent">.</span></span>
+    <span>© 2025 Vishal Singh Naruka · Built with precision</span>
+    <span class="font-mono">Jaipur, India</span>
+  </div>
+</footer>
+
+<!-- MODALS -->
+<div id="modal-1" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Financial Literacy Initiative details" onclick="closeModalOutside(event, 'modal-1')">
+  <div class="modal-box">
+    <div class="flex justify-between items-start mb-6">
+      <h3 class="font-display font-bold text-2xl text-white">Financial Literacy Initiative</h3>
+      <button onclick="closeModal('modal-1')" aria-label="Close modal" class="text-slate-400 hover:text-white ml-4"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <p class="badge mb-4">Self-Initiated</p>
+    <ul class="text-slate-300 text-sm space-y-3 leading-relaxed">
+      <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-accent flex-shrink-0 mt-0.5"></i>Self-directed study of equity markets, mutual funds, and financial instruments over 3+ years.</li>
+      <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-accent flex-shrink-0 mt-0.5"></i>Developed the ability to translate complex financial concepts into clear language for non-expert audiences.</li>
+      <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-accent flex-shrink-0 mt-0.5"></i>Positioned to provide insightful financial guidance aligned with customer goals in a banking context.</li>
+    </ul>
+  </div>
+</div>
+
+<div id="modal-2" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Customer Communication Mastery details" onclick="closeModalOutside(event, 'modal-2')">
+  <div class="modal-box">
+    <div class="flex justify-between items-start mb-6">
+      <h3 class="font-display font-bold text-2xl text-white">Customer Communication Mastery</h3>
+      <button onclick="closeModal('modal-2')" aria-label="Close modal" class="text-slate-400 hover:text-white ml-4"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <ul class="text-slate-300 text-sm space-y-3 leading-relaxed">
+      <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-accent flex-shrink-0 mt-0.5"></i>Achieved fluency in English (verbal and written), enabling effective communication in professional banking environments.</li>
+      <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-accent flex-shrink-0 mt-0.5"></i>Developed strong interpersonal skills focused on empathy, active listening, and clear articulation of financial solutions.</li>
+      <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-accent flex-shrink-0 mt-0.5"></i>Practiced handling simulated customer inquiries with professionalism and accuracy.</li>
+    </ul>
+  </div>
+</div>
+
+<div id="modal-3" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Banking Academic Foundation details" onclick="closeModalOutside(event, 'modal-3')">
+  <div class="modal-box">
+    <div class="flex justify-between items-start mb-6">
+      <h3 class="font-display font-bold text-2xl text-white">Banking Academic Foundation</h3>
+      <button onclick="closeModal('modal-3')" aria-label="Close modal" class="text-slate-400 hover:text-white ml-4"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <ul class="text-slate-300 text-sm space-y-3 leading-relaxed">
+      <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-accent flex-shrink-0 mt-0.5"></i>Built a strong understanding of financial services through academic coursework at Rajasthan University.</li>
+      <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-accent flex-shrink-0 mt-0.5"></i>Studied economics principles that underpin banking operations, lending, and deposit management.</li>
+      <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-accent flex-shrink-0 mt-0.5"></i>Demonstrated quick learning ability and attention to detail throughout academic career (2022–2025).</li>
+    </ul>
+  </div>
+</div>
+
+<div id="modal-4" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Stock and Trade Research details" onclick="closeModalOutside(event, 'modal-4')">
+  <div class="modal-box">
+    <div class="flex justify-between items-start mb-6">
+      <h3 class="font-display font-bold text-2xl text-white">Stock &amp; Trade Research</h3>
+      <button onclick="closeModal('modal-4')" aria-label="Close modal" class="text-slate-400 hover:text-white ml-4"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <p class="badge mb-4">Self-Taught</p>
+    <ul class="text-slate-300 text-sm space-y-3 leading-relaxed">
+      <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-accent flex-shrink-0 mt-0.5"></i>Self-taught knowledge in stock market investments, equity analysis, and trading strategies.</li>
+      <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-accent flex-shrink-0 mt-0.5"></i>Studied market trends, fundamental and technical analysis to understand how capital markets operate.</li>
+      <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-accent flex-shrink-0 mt-0.5"></i>Leverages this knowledge to provide customers with informed, relevant financial guidance within regulatory boundaries.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMobile() { mobileMenu.classList.remove('open'); }
+
+  // Modals
+  function openModal(id) { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+  function closeModalOutside(e, id) { if (e.target === document.getElementById(id)) closeModal(id); }
+
+  // Intersection Observer for fade-in-up
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('fade-visible');
+        // Animate skill bars
+        entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.width + '%';
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-hidden').forEach(el => observer.observe(el));
+
+  // Also trigger skill bars when their section is visible
+  document.querySelectorAll('.skill-bar-fill').forEach(bar => {
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          bar.style.width = bar.dataset.width + '%';
+          sectionObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    sectionObserver.observe(bar);
+  });
+</script>
+</body>
+</html>
